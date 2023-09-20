@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+main{
+    display: block;
+    border: 2px solid navy;
+    width: 450px;
+    background-color: white;
+    padding : 15px;
+    margin: auto;
+}
+ h1{
+    color: navy;
+ }
+ label{
+    width: 10em;
+    padding-right: 1em;
+    padding-bottom: .5em;
+    float: left;
+ }
+ #cont input{
+    float: left;
+    width: 15em;
+ }
+ #cont span {
+    margin-left: 5px;
+ }
+#buttons input {
+    float: left;
+    margin-bottom: .5em;
+}
+br {
+    clear: left;
+}
