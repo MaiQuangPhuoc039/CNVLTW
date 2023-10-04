@@ -1,14 +1,18 @@
 <?php
 //get tasklist array from POST
-$task_list = filter_input(INPUT_POST, 'tasklist', 
-        FILTER_DEFAULT, FILTER_REQUIRE_ARRAY);
+$task_list = filter_input(
+    INPUT_POST,
+    'tasklist',
+    FILTER_DEFAULT,
+    FILTER_REQUIRE_ARRAY
+);
 if ($task_list === NULL) {
     $task_list = array();
-    
-//    add some hard-coded starting values to make testing easier
-//    $task_list[] = 'Write chapter';
-//    $task_list[] = 'Edit chapter';
-//    $task_list[] = 'Proofread chapter';
+
+    //    add some hard-coded starting values to make testing easier
+    //    $task_list[] = 'Write chapter';
+    //    $task_list[] = 'Edit chapter';
+    //    $task_list[] = 'Proofread chapter';
 }
 
 //get action variable from POST
@@ -18,7 +22,7 @@ $action = filter_input(INPUT_POST, 'action');
 $errors = array();
 
 //process
-switch( $action ) {
+switch ($action) {
     case 'Add Task':
         $new_task = filter_input(INPUT_POST, 'newtask');
         if (empty($new_task)) {
@@ -38,17 +42,17 @@ switch( $action ) {
         break;
     case 'Promote Task':
         $task_pro = filter_input(INPUT_POST, 'taskid', FILTER_VALIDATE_INT);
-        if($task_pro === NULL || $task_pro ===false ){
+        if ($task_pro === NULL || $task_pro === false) {
             $errors[]  = 'The task cannot be promote ';
-        }else if($task_pro == 0 ){
+        } else if ($task_pro == 0) {
             $errors[] = 'You can\'t promote the first task ';
-        }else{
+        } else {
             // change value when changing position in array
             $task_val_1 = $task_list[$task_pro];     // ex: 3
-            $task_val_2 = $task_list[$task_pro-1];   // ex: 2
+            $task_val_2 = $task_list[$task_pro - 1];   // ex: 2
 
             // swap value for val_1 , val_2 (val : value)
-            $task_list[$task_pro-1] = $task_val_1;
+            $task_list[$task_pro - 1] = $task_val_1;
             $task_list[$task_pro]   = $task_val_2;
 
             break;
@@ -56,20 +60,36 @@ switch( $action ) {
     case 'Sort Tasks':
         sort($task_list);
         break;
-        
-/*
+
+
     case 'Modify Task':
-    
+        $task_index = filter_input(INPUT_POST, 'taskid', FILTER_VALIDATE_INT);
+        if ($task_index === null || $task_index === false) {
+            $errors[] = "The task cannot be modefied .";
+        } else {
+            $task_to_modify = $task_list[$task_index];
+        }
+        break;
+
     case 'Save Changes':
-    
+        $temp = filter_input(INPUT_POST, 'modifiedtaskid', FILTER_VALIDATE_INT);
+        $modified_task = filter_input(INPUT_POST, 'modifiedtask');
+        if (empty($modified_task)) {
+            $errors[] = 'The modified task cannot be empty ';
+        } else if ($temp === null || $temp === false) {
+            $errors[] = 'The task cannnot be modified';
+        } else {
+
+            // swap value vs $tasl_list[$temp]   -> finished modified empty 
+            $task_list[$temp] = $modified_task;
+            $modified_task = '';
+        }
+        break;
+
+
     case 'Cancel Changes':
-    
-  
-        
-     
-    
-*/
+        $modified_task = '';
+        break;
 }
 
 include('task_list.php');
-?>
